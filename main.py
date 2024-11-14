@@ -4,8 +4,8 @@ from service.lead_generator_service import LeadGeneratorService
 from model.audience_model import AudienceModel
 
 # Mailchimp API configuration
-API_KEY = "YOUR_API_KEY"
-SERVER_PREFIX = "YOUR_SERVER_PREFIX"
+API_KEY = "d764c4668359d46064c70bcf5f3b6438-us22"
+SERVER_PREFIX = "us22"
 
 def main():
     # Initialize services
@@ -31,7 +31,7 @@ def main():
     )
 
     # Create audience and get the list ID
-    list_id = audience_service.create_audience(afrotech_audience)
+    list_id = "0199efe2d4" #audience_service.create_audience(afrotech_audience)
     if list_id:
         print(f"Audience created with list ID: {list_id}")
 
@@ -48,5 +48,8 @@ def main():
             status = contact_service.check_subscription_status(list_id, contact.email_address)
             print(f"Subscription status for {contact.email_address}: {status}")
 
+        # Tag contacts with "interested" in their email
+        contact_service.tagged(list_id)
+        print("Tagging complete for contacts with 'interested' in their email address.")
 if __name__ == "__main__":
     main()

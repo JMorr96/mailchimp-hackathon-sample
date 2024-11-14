@@ -3,11 +3,11 @@ from mailchimp_marketing.api_client import ApiClientError
 from model.audience_model import AudienceModel
 
 class AudienceService:
-    def __init__(self, api_key, server_prefix):
+    def __init__(self, api_key, server):
         self.client = MailchimpMarketing.Client()
         self.client.set_config({
             "api_key": api_key,
-            "server": server_prefix
+            "server": server
         })
 
     def create_audience(self, audience: AudienceModel):

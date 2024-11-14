@@ -34,3 +34,27 @@ class ContactService:
         except ApiClientError as error:
             print("Error checking subscription status:", error.text)
             return None
+
+    def get_members_in_list(self, list_id):
+        try:
+            response = self.client.lists.get_list_members_info(list_id)
+            print("Members in list:", response['members'])
+            return response['members']
+        except ApiClientError as error:
+            print("Error retrieving members:", error.text)
+            return None
+
+    def tagged(self, list_id):
+        members = self.get_members_in_list(list_id)
+        if members:
+            for member in members:
+                email = member['email_address']
+                if "interested" in email:
+                    member_hash = hashlib.md5(email.encode('utf-8').lower()).hexdigest()
+                    try:
+                        tag_response = self.client.lists.update_list_member_tags(list_id, member_hash, {
+                            "tags": [{"name": "interested", "status": "active"}]
+                        })
+                        print(f"Tag 'interested' added to {email}. Response: {tag_response}")
+                    except ApiClientError as error:
+                        print(f"Error tagging {email}: {error.text}")
